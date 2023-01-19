@@ -1,9 +1,32 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Patch>
+    <!-- Modify all humanoid beds to link with the life support system. -->
     <Operation Class="PatchOperationAdd">
-        <xpath>Defs/ThingDef[defName="HospitalBed"]/comps/li[@Class="CompProperties_AffectedByFacilities"]/linkableFacilities</xpath>
+        <xpath>Defs/ThingDef[@Name="BasicBedBase" or defName="Crib" or defName="HospitalBed"]/comps/li[@Class="CompProperties_AffectedByFacilities"]/linkableFacilities</xpath>
         <value>
             <li>QE_LifeSupportSystem</li>
         </value>
+    </Operation>
+    <!-- (Try to) modify all animal beds to link with the life support system. -->
+    <Operation Class="PatchOperationConditional">
+        <xpath>Defs/ThingDef[@Name="AnimalBedFurnitureBase"]/comps/li[@Class="CompProperties_AffectedByFacilities"]</xpath>
+        <!-- Add the AffectedByFacilities comp if it does not exist. -->
+        <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[@Name="AnimalBedFurnitureBase"]/comps</xpath>
+            <value>
+                <li Class="CompProperties_AffectedByFacilities">
+                    <linkableFacilities>
+                        <li>QE_LifeSupportSystem</li>
+                    </linkableFacilities>
+                </li>
+            </value>
+        </nomatch>
+        <!-- Add only the facility entry if the comp was already added. -->
+        <match Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[@Name="AnimalBedFurnitureBase"]/comps/li[@Class="CompProperties_AffectedByFacilities"]/linkableFacilities</xpath>
+            <value>
+                <li>QE_LifeSupportSystem</li>
+            </value>
+        </match>
     </Operation>
 </Patch>
