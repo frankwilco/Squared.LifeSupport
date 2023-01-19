@@ -5,7 +5,7 @@ using Verse;
 
 namespace FrankWilco.RimWorld
 {
-    public static class LifeSupportUtility
+    public static class PawnExtensions
     {
         public static bool ValidLifeSupportNearby(this Pawn pawn)
         {
