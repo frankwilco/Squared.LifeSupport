@@ -18,6 +18,9 @@
         <li>brrainz.harmony</li>
         <li>Troopersmith1.DeathRattle</li>
     </loadAfter>
+    <incompatibleWith>
+        <li>Troopersmith1.LifeSupport</li>
+    </incompatibleWith>
     <description>Life Support is a mod that adds the &lt;color=blue&gt;&lt;b&gt;Life Support System&lt;/b&gt;&lt;/color&gt; building. It's a linkable to beds that will prevent a pawn from dying if they lose organs. I took this building from the mod 'Questionable Ethics' and made it a standalone mod to increase mod compatibility.
 
 See the mod description page on Steam for more information.
