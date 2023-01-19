@@ -1,7 +1,7 @@
 ﻿using RimWorld;
 using Verse;
 
-namespace LifeSupport
+namespace FrankWilco.RimWorld
 {
     public class Hediff_LifeSupport : HediffWithComps
     {

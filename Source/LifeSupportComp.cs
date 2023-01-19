@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Verse;
 
-namespace LifeSupport
+namespace FrankWilco.RimWorld
 {
     /// <summary>
     /// Tags this Thing as being valid life support.

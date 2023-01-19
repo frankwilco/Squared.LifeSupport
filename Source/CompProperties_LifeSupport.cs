@@ -1,6 +1,6 @@
 ﻿using Verse;
 
-namespace LifeSupport
+namespace FrankWilco.RimWorld
 {
     public class CompProperties_LifeSupport : CompProperties
     {

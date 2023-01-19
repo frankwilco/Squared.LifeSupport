@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using static Verse.PawnCapacityUtility;
 
-namespace LifeSupport
+namespace FrankWilco.RimWorld
 {
     [StaticConstructorOnStartup]
     public static class HarmonyPatches
