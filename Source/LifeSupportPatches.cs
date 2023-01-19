@@ -8,7 +8,7 @@ using static Verse.PawnCapacityUtility;
 namespace FrankWilco.RimWorld
 {
     [HarmonyPatch]
-    public static class HarmonyPatches
+    public static class LifeSupportPatches
     {
         [HarmonyPrefix]
         [HarmonyPatch(typeof(Pawn_HealthTracker), nameof(Pawn_HealthTracker.ShouldBeDeadFromRequiredCapacity))]
