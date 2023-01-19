@@ -58,7 +58,7 @@ namespace FrankWilco.RimWorld
             var hediff_deathrattle = new List<Hediff>();
 
             Hediff hediff_lifesupport = null;
-            var Hediff_DeathRattle = HarmonyPatches.Hediff_DeathRattle;
+            var Hediff_DeathRattle = LifeSupportMod.Hediff_DeathRattle;
             foreach (var hediff in health.hediffSet.hediffs)
             {
                 if (hediff.def == LifeSupportDefOf.QE_LifeSupport)

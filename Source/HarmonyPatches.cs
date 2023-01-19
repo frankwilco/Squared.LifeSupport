@@ -2,43 +2,16 @@
 using RimWorld;
 using Verse.AI;
 using HarmonyLib;
-using System;
 using System.Collections.Generic;
 using static Verse.PawnCapacityUtility;
 
 namespace FrankWilco.RimWorld
 {
-    [StaticConstructorOnStartup]
+    [HarmonyPatch]
     public static class HarmonyPatches
     {
-        internal static Type Hediff_DeathRattle = null;
-
-        static HarmonyPatches()
-        {
-            var harmony = new Harmony("LifeSupport");
-
-            harmony.Patch(
-                AccessTools.Method(typeof(Pawn_HealthTracker), "ShouldBeDeadFromRequiredCapacity"),
-                prefix: new HarmonyMethod(typeof(HarmonyPatches).GetMethod(nameof(Patch_ShouldBeDeadFromRequiredCapacity)))
-            );
-
-            harmony.Patch(
-                AccessTools.Method(typeof(Toils_LayDown), "LayDown"),
-                postfix: new HarmonyMethod(typeof(HarmonyPatches).GetMethod(nameof(Patch_LayDown)))
-            );
-
-            harmony.Patch(
-                AccessTools.Method(typeof(PawnCapacityUtility), "CalculateLimbEfficiency"),
-                prefix: new HarmonyMethod(typeof(HarmonyPatches).GetMethod(nameof(Patch_CalculateLimbEfficiency)))
-            );
-
-            Hediff_DeathRattle = AccessTools.TypeByName("DeathRattle.Hediff_DeathRattle");
-            if (!(Hediff_DeathRattle is null))
-            {
-                Log.Message("[LifeSupport] found DeathRattle");
-            }
-        }
-
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(Pawn_HealthTracker), nameof(Pawn_HealthTracker.ShouldBeDeadFromRequiredCapacity))]
         public static bool Patch_ShouldBeDeadFromRequiredCapacity(
             ref Pawn_HealthTracker __instance,
             ref PawnCapacityDef __result)
@@ -68,6 +41,8 @@ namespace FrankWilco.RimWorld
             return false;
         }
 
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(Toils_LayDown), nameof(Toils_LayDown.LayDown))]
         public static void Patch_LayDown(ref Toil __result)
         {
             bool debug = false;
@@ -88,6 +63,8 @@ namespace FrankWilco.RimWorld
             });
         }
 
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(PawnCapacityUtility), nameof(PawnCapacityUtility.CalculateLimbEfficiency))]
         public static bool Patch_CalculateLimbEfficiency(
             ref float __result,
             HediffSet diffSet,

@@ -44,6 +44,10 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>..\..\..\..\..\..\Program Files\GOG Games\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CompProperties_LifeSupport.cs" />
@@ -51,6 +55,8 @@
     <Compile Include="Hediff_LifeSupport.cs" />
     <Compile Include="LifeSupportComp.cs" />
     <Compile Include="LifeSupportDefOf.cs" />
+    <Compile Include="ModSettings.cs" />
+    <Compile Include="Mod.cs" />
     <Compile Include="LifeSupportUtility.cs" />
   </ItemGroup>
   <ItemGroup>
