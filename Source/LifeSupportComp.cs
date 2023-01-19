@@ -1,12 +1,8 @@
 ﻿using RimWorld;
-using System.Collections.Generic;
 using Verse;
 
 namespace FrankWilco.RimWorld
 {
-    /// <summary>
-    /// Tags this Thing as being valid life support.
-    /// </summary>
     public class LifeSupportComp : ThingComp
     {
         public bool Active => !(parent.TryGetComp<CompPowerTrader>() is CompPowerTrader power) || power.PowerOn;
@@ -18,31 +14,28 @@ namespace FrankWilco.RimWorld
                 return;
             }
 
-            // Check for state change in surrounding pawns in beds.
-            Map map = parent.Map;
-            var pawns = new List<Pawn>();
-            foreach (IntVec3 cell in parent.CellsAdjacent8WayAndInside())
+            var targetComp = parent.TryGetComp<CompFacility>();
+            if (targetComp == null)
             {
-                foreach (Thing thing in cell.GetThingList(map))
-                {
-                    if (thing is Building_Bed bed)
-                    {
-                        for (int i = 0, l = bed.SleepingSlotsCount; i < l; i++)
-                        {
-                            var pawn = bed.GetSleepingSlotPos(i).GetFirstPawn(map);
-                            if (!(pawn is null))
-                            {
-                                pawns.Add(pawn);
-                            }
-                        }
-                    }
-                }
+                Log.Warning("This thing must be attached to a facility.");
+                return;
             }
-            foreach (var pawn in pawns)
+
+            // Check for state change in surrounding pawns in beds.
+            foreach (Thing thing in targetComp.LinkedBuildings)
             {
-                if (!pawn.health.Dead)
+                if (!(thing is Building_Bed bed))
                 {
-                    pawn.SetHediffs(validLifeSupportNearby: false);
+                    Log.Warning("This thing must be linked only to beds.");
+                    continue;
+                }
+                foreach (var pawn in bed.CurOccupants)
+                {
+                    if (pawn is null || pawn.health.Dead)
+                    {
+                        continue;
+                    }
+                    pawn.SetHediffs(false);
                     pawn.health.CheckForStateChange(null, null);
                 }
             }

@@ -9,23 +9,31 @@ namespace FrankWilco.RimWorld
     {
         public static bool ValidLifeSupportNearby(this Pawn pawn)
         {
-            return (
-                pawn.CurrentBed() is Building_Bed bed &&
-                GenAdj.CellsAdjacent8Way(bed).Any(cell =>
+            if (!(pawn.CurrentBed() is Building_Bed bed))
+            {
+                // Pawn is not occupying a bed.
+                return false;
+            }
+
+            var targetComp = bed.TryGetComp<CompAffectedByFacilities>();
+            if (targetComp == null)
+            {
+                Log.Warning("The pawn's bed must be affected by facilities.");
+                return false;
+            }
+
+            foreach (var thing in targetComp.LinkedFacilitiesListForReading)
+            {
+                if (thing.TryGetComp<LifeSupportComp>() is LifeSupportComp lifeSupport)
                 {
-                    return cell.GetThingList(bed.Map).Any(cellThing =>
-                    {
-                        if (cellThing.TryGetComp<LifeSupportComp>() is LifeSupportComp lifeSupport)
-                        {
-                            return lifeSupport.Active;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    });
-                })
-            );
+#if DEBUG
+                    Log.Message("Found an active life support thing.");
+#endif
+                    return lifeSupport.Active;
+                }
+            }
+
+            return false;
         }
 
         internal static bool WouldDieWithoutLifeSupport(this Pawn pawn)
