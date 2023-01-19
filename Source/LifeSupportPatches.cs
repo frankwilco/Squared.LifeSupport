@@ -11,32 +11,33 @@ namespace FrankWilco.RimWorld
     public static class LifeSupportPatches
     {
         [HarmonyPrefix]
-        [HarmonyPatch(typeof(Pawn_HealthTracker), nameof(Pawn_HealthTracker.ShouldBeDeadFromRequiredCapacity))]
+        [HarmonyPatch(typeof(Pawn_HealthTracker),
+            nameof(Pawn_HealthTracker.ShouldBeDeadFromRequiredCapacity))]
         public static bool Patch_ShouldBeDeadFromRequiredCapacity(
             ref Pawn_HealthTracker __instance,
             ref PawnCapacityDef __result)
         {
-            // Check if consciousness is there. If it is then its okay.
-
             Pawn_HealthTracker health = __instance;
             Pawn pawn = health.hediffSet.pawn;
 
             if (!health.hediffSet.HasHediff(LifeSupportDefOf.QE_LifeSupport))
             {
-                // Not on life support
+                // Pawn is not on life support.
                 return true;
             }
             else if (!pawn.ValidLifeSupportNearby())
             {
-                // Life support is unpowered
+                // Linked life support is unpowered.
                 return true;
             }
             else if (!health.capacities.CapableOf(PawnCapacityDefOf.Consciousness))
             {
-                // No consciousness
+                // Pawn is unconscious.
                 return true;
             }
 
+            // If none of the conditions above were met, let the pawn
+            // stay alive and prevent the original method from running.
             __result = null;
             return false;
         }
@@ -46,23 +47,24 @@ namespace FrankWilco.RimWorld
         public static void Patch_LayDown(ref Toil __result)
         {
             Toil toil = __result;
-            if (toil == null)
-                return;
-
-            toil.AddPreTickAction(delegate ()
+            // Check for nearby life support before laying the pawn down
+            // and apply the hediff if applicable.
+            toil?.AddPreTickAction(delegate
             {
-                Pawn pawn = toil.actor;
+                Pawn pawn = toil?.actor;
+                // Don't bother if the pawn is null for some reason or is
+                // already dead.
                 if (pawn is null || pawn.Dead)
                 {
                     return;
                 }
-
                 pawn.SetHediffs();
             });
         }
 
         [HarmonyPrefix]
-        [HarmonyPatch(typeof(PawnCapacityUtility), nameof(PawnCapacityUtility.CalculateLimbEfficiency))]
+        [HarmonyPatch(typeof(PawnCapacityUtility),
+            nameof(PawnCapacityUtility.CalculateLimbEfficiency))]
         public static bool Patch_CalculateLimbEfficiency(
             ref float __result,
             HediffSet diffSet,
@@ -77,29 +79,29 @@ namespace FrankWilco.RimWorld
 
             if (limbCoreTag != BodyPartTagDefOf.MovingLimbCore)
             {
+                // Ignore if we're not dealing with the "moving" capacity.
                 return true;
             }
 
-            var hediff = diffSet.GetFirstHediffOfDef(LifeSupportDefOf.QE_LifeSupport);
-            if (hediff is null)
+            var lifeSupportHediff = diffSet.GetFirstHediffOfDef(LifeSupportDefOf.QE_LifeSupport);
+            if (lifeSupportHediff is null)
             {
+                // Pawn is not on life support.
                 return true;
             }
-
-            if (hediff.Severity < 1f)
+            if (lifeSupportHediff.Severity < 1f)
             {
+                // Ignore if pawn will not die without life support.
                 return true;
             }
 
+            // Prevent the pawn from walking by zeroing their limb efficiency
+            // and prevent the original method from running.
             __result = 0f;
-
-            if (!(impactors is null))
+            impactors?.Add(new CapacityImpactorHediff()
             {
-                var capacityImpactor = new CapacityImpactorHediff();
-                capacityImpactor.hediff = hediff;
-                impactors.Add(capacityImpactor);
-            }
-
+                hediff = lifeSupportHediff
+            });
             return false;
         }
     }
