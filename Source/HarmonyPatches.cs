@@ -45,8 +45,6 @@ namespace FrankWilco.RimWorld
         [HarmonyPatch(typeof(Toils_LayDown), nameof(Toils_LayDown.LayDown))]
         public static void Patch_LayDown(ref Toil __result)
         {
-            bool debug = false;
-            if (debug) Log.Message("Patch_LayDown");
             Toil toil = __result;
             if (toil == null)
                 return;
