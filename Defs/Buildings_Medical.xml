@@ -48,10 +48,18 @@
                 <basePowerConsumption>200</basePowerConsumption>
             </li>
             <li Class="CompProperties_Flickable"/>
+            <li Class="CompProperties_Facility">
+                <maxSimultaneous>2</maxSimultaneous>
+                <mustBePlacedAdjacent>true</mustBePlacedAdjacent>
+                <canLinkToMedBedsOnly>true</canLinkToMedBedsOnly>
+            </li>
             <li Class="FrankWilco.RimWorld.CompProperties_LifeSupport"/>
         </comps>
         <designationHotKey>Misc5</designationHotKey>
         <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
         <uiIconScale>0.85</uiIconScale>
+        <placeWorkers>
+            <li>PlaceWorker_ShowFacilitiesConnections</li>
+        </placeWorkers>
     </ThingDef>
 </Defs>
