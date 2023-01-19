@@ -48,7 +48,7 @@
                 <basePowerConsumption>200</basePowerConsumption>
             </li>
             <li Class="CompProperties_Flickable"/>
-            <li Class="LifeSupport.CompProperties_LifeSupport"/>
+            <li Class="FrankWilco.RimWorld.CompProperties_LifeSupport"/>
         </comps>
         <designationHotKey>Misc5</designationHotKey>
         <constructionSkillPrerequisite>8</constructionSkillPrerequisite>

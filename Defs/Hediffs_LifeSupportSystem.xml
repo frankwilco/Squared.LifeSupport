@@ -5,7 +5,7 @@
         <label>life support system</label>
         <labelNoun>on life support</labelNoun>
         <description>Life support prevents a pawn from dying from losing organs.</description>
-        <hediffClass>LifeSupport.Hediff_LifeSupport</hediffClass>
+        <hediffClass>FrankWilco.RimWorld.Hediff_LifeSupport</hediffClass>
         <defaultLabelColor>(0.2, 0.6, 0.9)</defaultLabelColor>
         <isBad>false</isBad>
         <initialSeverity>0.001</initialSeverity>
