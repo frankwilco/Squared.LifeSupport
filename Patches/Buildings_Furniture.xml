@@ -29,4 +29,16 @@
             </value>
         </match>
     </Operation>
+    <!-- Link with VFE - Medical Module's operating table. -->
+    <Operation Class="PatchOperationFindMod">
+        <mods>
+            <li>Vanilla Furniture Expanded - Medical Module</li>
+        </mods>
+        <match Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[defName="Bed_OperatingTable"]/comps/li[@Class="CompProperties_AffectedByFacilities"]/linkableFacilities</xpath>
+            <value>
+                <li>QE_LifeSupportSystem</li>
+            </value>
+        </match>
+    </Operation>
 </Patch>
