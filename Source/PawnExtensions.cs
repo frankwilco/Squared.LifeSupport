@@ -18,7 +18,9 @@ namespace FrankWilco.RimWorld
             var targetComp = bed.TryGetComp<CompAffectedByFacilities>();
             if (targetComp == null)
             {
+#if DEBUG
                 Log.Warning("The pawn's bed must be affected by facilities.");
+#endif
                 return false;
             }
 
